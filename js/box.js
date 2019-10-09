@@ -1,6 +1,7 @@
 ;(function(){
-	function container(size){
+	function container(size,noofballs){
 		this.size=size;
+		this.noofballs=noofballs;
 		this.parentElem=document.getElementById('app');
 		var that=this;
 		this.init=function(){
@@ -9,7 +10,7 @@
 		this.makewrapper=function(){
 			for(var i=0;i<this.size;i++){
 
-				this.wrapp = new wrapper(this.parentElem,10);
+				this.wrapp = new wrapper(this.parentElem,this.noofballs);
 				this.wrapp.init();
 				this.parentElem.appendChild(this.wrapp.getElement());
 
@@ -25,8 +26,10 @@
 		var that=this;
 		this.numOfBoxes=numOfBoxes;
 		this.element=document.createElement('div');
-/*		this.element.style.height="500px";*/
-		this.element.style.position="relative";
+/*		this.element.style.height="500px";
+		this.element.style.width="1000px";*/
+		this.element.style.float="left";
+		this.element.style.border="1px solid black";
 		this.parentElem.appendChild(this.element);
 
 		this.init=function(){
@@ -38,10 +41,10 @@
 
 		var z = setInterval(function(){
 			for(var i=0;i<that.numOfBoxes;i++){
-				if(that.array[i].active){
 				for(var j=0;j<that.numOfBoxes;j++){
 
-					if(that.array[i].grid===that.array[j].grid && that.array[j].active ){
+					if(that.array[i].grid===that.array[j].grid ||( that.array[i].grid)===(that.array[j].grid-1 ) ){
+
 					if(i!==j){
 					if(that.array[i].x < that.array[j].x  + that.array[j].width && that.array[i].x + that.array[i].width > that.array[j].x && that.array[i].y < that.array[j].y + that.array[j].height && that.array[i].y + that.array[i].height > that.array[j].y)
 						{
@@ -51,7 +54,7 @@
 			}
 
 					}
-				}
+				
 				}
 			},4);
 /*		var z = setInterval(function(){
@@ -111,73 +114,76 @@
 		this.height=width;
 		this.dx=1;
 		this.dy=1;
-		this.speed=0;
+		this.ballmax=parseInt(document.getElementById('ballsize').value)?parseInt(document.getElementById('ballsize').value):10;
+		this.speed=parseInt(document.getElementById('speedofboxes').value)?parseInt(document.getElementById('speedofboxes').value):1;
 		this.active=true;
 		this.grid=1;
 		this.radius=10;
 		this.mass=1;
 		var that=this;
 		this.momentum=1;
+		this.totalsize=document.getElementById('app').clientWidth;
 
 		this.init=function(){
 			this.randomize();
 			this.test=this.createBoxes();
-
+			
 			this.drawBoxes();
-/*			window.onresize=function(){
+			window.onresize=function(){
 			that.randomize();
-			that.moveBoxes();
-			that.drawBoxes();
-		}*/
+			this.test=this.createBoxes();
+		}
+
+
 			var that=this;
 			setInterval(function(){
 				that.moveBoxes(); 
 				that.drawBoxes();
 				
-			},4);
+			},5);
 
 			setInterval(function(){
 				that.makeGrid();
-			},8);
+			},3);
 			return this;
 
 		}
 		this.makeGrid=function(){
 
 
-			if(this.x<300 & this.y<300){
+			if(this.x<(this.totalsize/3) & this.y<300){
 				this.grid=1;
 			}
-			else if(this.x<300 && this.y>300){
+			else if(this.x<(this.totalsize/3) && this.y>300){
 				this.grid=2;
 			}
-			else if(this.x<=600 && this.x>=300 && this.y<300){
+			else if(this.x<=(this.totalsize/2) && this.x>=(this.totalsize/3) && this.y<300){
+				this.grid=2;
+			}
+			else if(this.x<=(this.totalsize/2) && this.x>=(this.totalsize/3) && this.y>300){
 				this.grid=3;
 			}
-			else if(this.x<=600 && this.x>=300 && this.y>300){
+			else if(this.x>(this.totalsize/2) && this.x<=(this.totalsize) && this.y<300){
+				this.grid=3;
+			}
+			else if(this.x>(this.totalsize/2) && this.x<=(this.totalsize) && this.y>600){
 				this.grid=4;
 			}
-			else if(this.x>600 && this.x<=1000 && this.y<300){
-				this.grid=5;
-			}
-			else if(this.x>600 && this.x<=1000 && this.y>600){
-				this.grid=6;
-			}
 			else{
-				this.grid=7;
+				this.grid=4;
 			}
 		}
 
 
 		this.randomize=function(){
 			var randomNumX=Math.random();
-			 	randomNumX=randomNumX*document.getElementById('app').clientWidth-30;
+			 	randomNumX=randomNumX*document.getElementById('app').clientWidth-50;
 				randomNumX=Math.ceil(randomNumX);
 			var randomNumY=Math.random();
 				randomNumY=randomNumY*600;
 				randomNumY=Math.ceil(randomNumY);
 			var randomMass=Math.random();
-				randomMass=randomMass*(10-5)+5;
+				randomMass=randomMass*(this.ballmax-1)+1;
 			var randomDx=Math.floor(Math.random()*2)==1 ? this.dx=2:this.dx= -2;
 				
 			var	randomDy=Math.floor(Math.random()*2)==1 ? this.dy=2: this.dy=-2;
@@ -221,11 +227,11 @@
 		}
 
 		this.moveBoxes=function(){
-			this.x=this.x+this.dx*(this.momentum);
-			if(this.x>(document.getElementById('app').clientWidth-30)||this.x<0){
+			this.x=this.x+this.dx*(this.momentum)*this.speed;
+			if(this.x>(document.getElementById('app').clientWidth-50)||this.x<0){
 				this.dx*=-1;
 			}
-			this.y=this.y+this.dy*(this.momentum);
+			this.y=this.y+this.dy*(this.momentum)*this.speed;
 			if(this.y>600|| this.y<0){
 				this.dy*=-1;
 			}
@@ -242,9 +248,16 @@
 	}
 
 
-	var xyz=new container(size=1);
-	xyz.init();
 
+
+	this.startgame=document.getElementById('start');
+	var that=this;
+	this.startgame.onclick=function(){
+		var noofballs=parseInt(document.getElementById('howmanyballs').value);
+		var xyz=new container(size=1,noofballs=10);
+		xyz.init();
+		that.startgame.disabled=true;
+	}
 
 
 })()
