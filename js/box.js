@@ -9,7 +9,7 @@
 		this.makewrapper=function(){
 			for(var i=0;i<this.size;i++){
 
-				this.wrapp = new wrapper(this.parentElem,20);
+				this.wrapp = new wrapper(this.parentElem,10);
 				this.wrapp.init();
 				this.parentElem.appendChild(this.wrapp.getElement());
 
@@ -194,7 +194,7 @@
 			this.element=document.createElement('button');
 			this.element.style.borderRadius="50%";
 			this.element.setAttribute('id',`ball${this.boxes}`);
-			this.element.style.backgroundImage=`url('../box-collieder/images/ball.png')`;
+			this.element.style.backgroundImage=`url('./images/ball.png')`;
 			this.element.style.backgroundRepeat="no-repeat";
 			this.element.style.border="none";
 			this.element.style.backgroundSize="cover";
