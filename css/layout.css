@@ -15,3 +15,11 @@
 	clear:both;
 	display:table;
 }
+.main-container{
+	width:100%;
+}
+
+.flipper{
+	-webkit-transform:scaleX(-1);
+	transform:scaleX(-1);
+}
