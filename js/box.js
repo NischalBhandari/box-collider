@@ -1,7 +1,7 @@
 ;(function(){
 	function container(size,noofballs){
 		this.size=size;
-		this.noofballs=noofballs;
+		this.noofballs=noofballs?noofballs:10;
 		this.parentElem=document.getElementById('app');
 		var that=this;
 		this.init=function(){
@@ -26,9 +26,8 @@
 		var that=this;
 		this.numOfBoxes=numOfBoxes;
 		this.element=document.createElement('div');
-/*		this.element.style.height="500px";
-		this.element.style.width="1000px";*/
-		this.element.style.float="left";
+		this.element.style.height="630px";
+/*		this.element.style.width="1000px";*/
 		this.element.style.border="1px solid black";
 		this.parentElem.appendChild(this.element);
 
@@ -142,16 +141,16 @@
 				
 			},5);
 
-			setInterval(function(){
+/*			setInterval(function(){
 				that.makeGrid();
 			},3);
-			return this;
+			return this;*/
 
 		}
 		this.makeGrid=function(){
 
 
-			if(this.x<(this.totalsize/3) & this.y<300){
+		/*	if(this.x<(this.totalsize/3) & this.y<300){
 				this.grid=1;
 			}
 			else if(this.x<(this.totalsize/3) && this.y>300){
@@ -171,7 +170,7 @@
 			}
 			else{
 				this.grid=4;
-			}
+			}*/
 		}
 
 
@@ -254,7 +253,7 @@
 	var that=this;
 	this.startgame.onclick=function(){
 		var noofballs=parseInt(document.getElementById('howmanyballs').value);
-		var xyz=new container(size=1,noofballs=10);
+		var xyz=new container(size=1,noofballs);
 		xyz.init();
 		that.startgame.disabled=true;
 	}
