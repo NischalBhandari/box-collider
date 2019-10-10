@@ -150,7 +150,7 @@
 		this.makeGrid=function(){
 
 
-		/*	if(this.x<(this.totalsize/3) & this.y<300){
+			if(this.x<(this.totalsize/3) & this.y<300){
 				this.grid=1;
 			}
 			else if(this.x<(this.totalsize/3) && this.y>300){
@@ -170,7 +170,7 @@
 			}
 			else{
 				this.grid=4;
-			}*/
+			}
 		}
 
 
